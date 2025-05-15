@@ -60,4 +60,5 @@ A few string manipulation examples are found in the `src/exemples` folder and ca
 ## About this README
 Feel free to edit this README as well, it's yours :)
 The format of this file is [markdown](https://markdownlivepreview.com/)
+Hello ladies and gentlemen
 
