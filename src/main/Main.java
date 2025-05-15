@@ -8,6 +8,8 @@ import utils.Color;
 import utils.StringStyling;
 import utils.Style;
 
+lol
+
 public class Main {
 
     public static void main(String[] args) {
