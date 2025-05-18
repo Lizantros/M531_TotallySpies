@@ -2,6 +2,9 @@ package main;
 
 
 public class Game {
+    private Player player;
+    private WorldMap worldmap;
+    private CommandRegistry commandRegistry;
 
     public Game(){
         System.out.println("Initializing game...");
