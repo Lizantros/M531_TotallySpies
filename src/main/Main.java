@@ -20,5 +20,11 @@ public class Main {
         Game game = new Game();
         game.run();
         System.out.println(StringStyling.StyleString("Terminating...", Style.ITALIC, Color.BLACK));
+
+        Inventory inv = new Inventory();
+
+        inv.addItem("boussole");
+        inv.addItem("carte");
+        inv.showItems();
     }
 }
