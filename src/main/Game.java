@@ -41,6 +41,7 @@ public class Game {
         Location riviere = new Location("Rivière", "Une rivière clapote doucement.");
         Location pont = new Location("Pont de Pierre", "Un vieux pont de pierre enjambe la rivière.");
         Location montagne = new Location("Montagne", "Un sentier escarpé monte vers les sommets.");
+        Location pierre = new Location("La maison de Pierre Duriff", "Le grand monarch joue amicalement de la flûte");
 
 
         worldmap.addLocationToMap(foret, 0, 0);
@@ -48,19 +49,22 @@ public class Game {
         worldmap.addLocationToMap(riviere, 0, 2);
         worldmap.addLocationToMap(montagne, 1, 0);
         worldmap.addLocationToMap(pont, 1, 2);
+        worldmap.addLocationToMap(pierre, 1, 1);
 
 
         foret.addExit("east", clairiere.getName());
         foret.addExit("south", montagne.getName());
         clairiere.addExit("west", foret.getName());
         clairiere.addExit("east", riviere.getName());
-        clairiere.addExit("south", pont.getName());
+        clairiere.addExit("south", pierre.getName());
         riviere.addExit("west", clairiere.getName());
         riviere.addExit("south", pont.getName());
         pont.addExit("north", riviere.getName());
         pont.setLocked(true);
-        pont.addExit("up", clairiere.getName());
         montagne.addExit("north", foret.getName());
+        pierre.addExit("east", pont.getName());
+        pierre.addExit("west", montagne.getName());
+        pierre.addExit("north", clairiere.getName());
 
 
         this.player = new Player(foret);
@@ -68,7 +72,6 @@ public class Game {
     }
 
     public void run() {
-        // Ton message personnalisé ici !
         System.out.println("Oh shit, here we go again");
 
         String line;
@@ -82,15 +85,13 @@ public class Game {
 
             String commandVerb;
             String apresLeVerb = "";
-            String[] commandArgs;    // Le tableau final des arguments séparés
+            String[] commandArgs;
 
-            // Trouve le premier espace pour séparer le verbe du reste
+
             int firstSpaceIndex = line.indexOf(' ');
 
             if (firstSpaceIndex == -1) {
-                // Pas d'espace, toute la ligne est le verbe de commande
                 commandVerb = line.toLowerCase();
-                // Pas d'arguments dans ce cas
                 commandArgs = new String[0];
             } else {
                 commandVerb = line.substring(0, firstSpaceIndex).toLowerCase();
@@ -98,7 +99,7 @@ public class Game {
                     apresLeVerb = line.substring(firstSpaceIndex + 1).trim();
                 }
                 if (apresLeVerb.isEmpty()) {
-                    commandArgs = new String[0]; // Pas d'arguments
+                    commandArgs = new String[0];
                 } else {
                     String[] potentialArgs = apresLeVerb.split(" ");
                     List<String> finalListArgs = new ArrayList<>();
