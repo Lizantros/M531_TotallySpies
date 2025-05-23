@@ -19,7 +19,7 @@ public class MoveCommand implements ICommand {
         }
         String direction = args[0].toLowerCase();
         Player player = game.getPlayer();
-        WorldMap worldMap = game.getWorldMap(); // 'worldmap' en minuscules
+        WorldMap worldMap = game.getWorldMap();
         Location currentLocation = player.getCurrentLocation();
 
         String nextLocationName = currentLocation.getExit(direction);
