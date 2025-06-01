@@ -24,22 +24,22 @@ public class MoveCommand implements ICommand {
 
         String nextLocationName = currentLocation.getExit(direction);
         if (nextLocationName == null) {
-            System.out.println("Tu peux pas aller là bas le s");
+            System.out.println("Can't go there uh");
             return;
         }
 
         Location nextLocation = worldMap.getLocationByName(nextLocationName);
         if (nextLocation == null) {
-            System.out.println("La destination '" + nextLocationName + "' n'existe pas... oui...");
+            System.out.println("The destination '" + nextLocationName + "' doens't exist... bruh");
             return;
         }
 
         if (nextLocation.isLocked()) {
-            System.out.println("La zone : " + nextLocation.getName() + " est fermé... Dommage... Ou pas ! Cheh");
+            System.out.println("The zone : " + nextLocation.getName() + " is locked... sorrow and sadness");
         } else {
             player.setCurrentLocation(nextLocation);
             worldMap.updatePlayerGridPosition(nextLocation);
-            System.out.println("Tu te déplace vers " + direction);
+            System.out.println("You're moving to " + direction);
             System.out.println(nextLocation.getFullDescription());
         }
     }

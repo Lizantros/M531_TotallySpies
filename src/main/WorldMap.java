@@ -27,7 +27,7 @@ public class WorldMap {
             locationsByName.put(key, location);
             grid[r][c] = location;
         } else {
-            System.out.println("La zone " + location.getName() + " est quelque peu en dehors de la carte !!!! !!!!!!!!!!("+r+","+c+").");
+            System.out.println("The zone " + location.getName() + "is kinda out of the map !!!! !!!!!!!!!!("+r+","+c+").");
         }
     }
 

@@ -11,7 +11,7 @@ public class MapCommand implements ICommand {
 
     @Override
     public String getDescription() {
-        return "Afficher la carte comme dans Dora l'exploratrice";
+        return "Show the map like in Dora l'exploratrice";
     }
 
     @Override
@@ -22,9 +22,9 @@ public class MapCommand implements ICommand {
         int playerC = worldMap.getPlayerGridC();
 
         String mapString = Array2Dprinter.print2DArray(gridToPrint, playerR, playerC);
-        System.out.println("\n--- C'est la carte, c'est la carte ! ---");
+        System.out.println("\n--- it's the map, it's the map ! ---");
         System.out.println(mapString);
-        System.out.println("Cette carte vous est founrie par le terrifiant farfadet des forêt");
+        System.out.println("This map is being provided by a scary Vampire");
 
 
 
