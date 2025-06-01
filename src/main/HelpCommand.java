@@ -10,12 +10,12 @@ public class HelpCommand implements ICommand {
 
     @Override
     public String getDescription() {
-        return "Affiche les commandes";
+        return "Show the commands";
     }
 
     @Override
     public void execute(Game game, String[] args) {
-        System.out.println("\nCommandes disponibles :");
+        System.out.println("\nCommands available :");
         List<ICommand> allCommands = game.getCommandRegistry().getAllCommands();
         for (ICommand cmd : allCommands) {
             System.out.println(cmd.getVerb() + " - " + cmd.getDescription());
