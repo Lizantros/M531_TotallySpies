@@ -8,8 +8,9 @@ import java.util.Map;
 public class CommandRegistry {
     private Map<String, ICommand> commands;
 
-    public CommandRegistry() {
+    public CommandRegistry (Game game) {
         this.commands = new HashMap<>();
+        addCommand(new SaveCommand(game));
     }
 
     public void addCommand(ICommand command) {

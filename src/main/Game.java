@@ -13,12 +13,24 @@ public class Game {
 
     public Game() {
         System.out.println("Initializing game (ULTRA-SIMPLE BETA)...");
+        System.out.println("1 - Nouvelle partie");
+        System.out.println("2 - Charger la sauvegarde");
+        System.out.print("Choix : ");
+        String choix = inputScanner.nextLine();
+
+        if (choix.equals("2")) {
+            setupWorld(); // Il faut quand même initialiser le monde
+            loadGame();   // On charge la sauvegarde (ajouté en étape 2)
+        } else {
+            setupWorld(); // Commencer une nouvelle partie
+        }
+
         this.inputScanner = new Scanner(System.in);
-        this.commandRegistry = new CommandRegistry();
+        this.commandRegistry = new CommandRegistry(this);
         this.isGameOver = false;
 
         setupCommands();
-        setupWorld();
+        //setupWorld();
 
         System.out.println("'help' to see the commands.");
         if (this.player != null && this.player.getCurrentLocation() != null) {
@@ -27,7 +39,34 @@ public class Game {
             System.err.println("Err : No starting zone for the player... rip");
             this.isGameOver = true;
         }
+
     }
+
+    private void loadGame() {
+        try {
+            List<String> lines = java.nio.file.Files.readAllLines(java.nio.file.Paths.get("save.txt"));
+            for (String line : lines) {
+                if (line.startsWith("position=")) {
+                    String locName = line.split("=")[1];
+                    Location loc = worldmap.getLocationByName(locName);
+                    player.setCurrentLocation(loc);
+                } else if (line.startsWith("item=")) {
+                    String itemName = line.split("=")[1];
+                    Item item = new Item(itemName, "Objet chargé");
+                    player.getInventory().addItem(item);
+                } else if (line.startsWith("visited=")) {
+                    String locName = line.split("=")[1];
+                    Location loc = worldmap.getLocationByName(locName);
+                    player.addVisitedLocation(loc);
+                }
+            }
+            System.out.println("✅ Sauvegarde chargée !");
+        } catch (Exception e) {
+            System.out.println("❌ Erreur lors du chargement.");
+            e.printStackTrace();
+        }
+    }
+
 
     private void setupCommands() {
         commandRegistry.addCommand(new MoveCommand());
@@ -80,7 +119,7 @@ public class Game {
         zone4.addExit("west", zone3.getName());
 
 
-        this.player = new Player(zone1);
+        //this.player = new Player(zone1);
         this.worldmap.updatePlayerGridPosition(zone1);
     }
 
