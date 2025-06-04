@@ -37,7 +37,7 @@ public class Location implements IPrintable {
     }
 
     public String getFullDescription() {
-        String fullDesc = "You're lost in : " + name + "\n" + descriptionText + "bruh";
+        String fullDesc = "You're lost in : " + name + "\n" + descriptionText;
         if (items != null && !items.isEmpty()) {
             fullDesc += "\nYou're seeing... : ";
             List<String> itemNames = new ArrayList<>();
