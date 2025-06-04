@@ -8,22 +8,39 @@ public class InspectCommand implements ICommand {
 
     @Override
     public String getDescription() {
-        return "Inspecte un objet ou un lieu pour obtenir plus d'informations.";
+        return "inspect an object";
     }
 
     @Override
     public void execute(Game game, String[] args) {
-        /*if (args.length < 2) {
-            System.out.println("Utilisation : inspect <objet>");
+        if (args == null || args.length == 0) {
+            System.out.println("Inspect what ?");
             return;
         }
-        String itemName = args[1];
-        for (Item item : game.getPlayer().getInventory().getItems()) {
-            if (item.getName().equalsIgnoreCase(itemName)) {
-                System.out.println(item.getDescription());
-                return;
+        String itemName = String.join(" ", args);
+        Player player = game.getPlayer();
+        Item itemToInspect = null;
+
+        itemToInspect = player.getInventory().getItemByName(itemName);
+
+        if (itemToInspect == null) {
+            for (Item itemInRoom : player.getCurrentLocation().getItems()) {
+                if (itemInRoom.getName().equalsIgnoreCase(itemName)) {
+                    itemToInspect = itemInRoom;
+                    break;
+                }
             }
         }
-        System.out.println("Objet non trouvé.");*/
+
+        if (itemToInspect != null) {
+            if (itemToInspect instanceof Letter) {
+                ((Letter) itemToInspect).inspect();
+            } else {
+                System.out.println("You inspect " + itemToInspect.getName() + ":");
+                System.out.println(itemToInspect.getDescription());
+            }
+        } else {
+            System.out.println("There isn't an object called '" + itemName + "' to inspect");
+        }
     }
 }

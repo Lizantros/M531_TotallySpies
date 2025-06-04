@@ -1,6 +1,6 @@
 package main;
 
-public class UseCommand implements ICommand{
+public class UseCommand implements ICommand {
     @Override
     public String getVerb() {
         return "use";
@@ -8,27 +8,29 @@ public class UseCommand implements ICommand{
 
     @Override
     public String getDescription() {
-        return "Utilise un objet de l'inventaire.";
+        return "Use an object in your inventory";
     }
 
     @Override
     public void execute(Game game, String[] args) {
-       /* if (args.length < 2) {
-            System.out.println("Utilisation : use <nom_objet>");
+        if (args == null || args.length == 0) {
+            System.out.println("Using what objet ????????");
             return;
         }
-        String itemName = args[1];
-        Item itemToUse = null;
-        for (Item item : game.getPlayer().getInventory().getItems()) {
-            if (item.getName().equalsIgnoreCase(itemName)) {
-                itemToUse = item;
-                break;
-            }
-        }
+        String itemName = String.join(" ", args);
+        Player player = game.getPlayer();
+        Item itemToUse = player.getInventory().getItemByName(itemName);
+
         if (itemToUse == null) {
-            System.out.println("Objet non trouvé dans l'inventaire.");
+            System.out.println("You don't have this object called '" + itemName + "' in your inventory... Don't even remember what you take uh...");
             return;
         }
-        itemToUse.useOnLocation(game.getWorldMap().getPlayerLocation()); */
+
+        if (itemToUse instanceof Key) {
+            ((Key) itemToUse).use(game);
+        }
+        else {
+            System.out.println("You can't use " + itemToUse.getName());
+        }
     }
 }

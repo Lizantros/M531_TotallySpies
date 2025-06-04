@@ -8,15 +8,12 @@ public class LookCommand implements ICommand {
 
     @Override
     public String getDescription() {
-        return "Regarde autour de soi pour voir les objets présents.";
+        return "Tu sors une loupe et tu regardes autour de toi... Comme l'inspecteur Gadget ? (ancienne la ref)";
     }
 
     @Override
     public void execute(Game game, String[] args) {
-        /*Location loc = game.getWorldMap().getPlayerLocation();
-        System.out.println("Vous êtes à : " + loc.getName());
-        for (Item item : loc.getItems()) {
-            System.out.println("Objet présent : " + item.getName());
-        }*/
+        Location currentLocation = game.getPlayer().getCurrentLocation();
+        System.out.println(currentLocation.getFullDescription());
     }
 }

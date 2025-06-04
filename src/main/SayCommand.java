@@ -8,19 +8,25 @@ public class SayCommand implements ICommand {
 
     @Override
     public String getDescription() {
-        return "Fait parler le joueur.";
+        return "Say something to resolve enigma";
     }
 
     @Override
     public void execute(Game game, String[] args) {
-        if (args.length < 2) {
-            System.out.println("Utilisation : say <message>");
+        if (args == null || args.length == 0) {
+            System.out.println("Say what?");
             return;
         }
-        StringBuilder message = new StringBuilder();
-        for (int i = 1; i < args.length; i++) {
-            message.append(args[i]).append(" ");
+        String saidText = String.join(" ", args);
+        Player player = game.getPlayer();
+        Location currentLocation = player.getCurrentLocation();
+
+        System.out.println("YOU SAY : \"" + saidText + "\"");
+
+        if (currentLocation.hasEnigma() && !currentLocation.isEnigmaSolved()) {
+            currentLocation.solveEnigma(saidText);
+        } else if (currentLocation.isEnigmaSolved()) {
+            System.out.println("Enigma already resolved");
         }
-        System.out.println("Vous dites : " + message.toString().trim());
     }
 }

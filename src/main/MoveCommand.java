@@ -8,17 +8,39 @@ public class MoveCommand implements ICommand {
 
     @Override
     public String getDescription() {
-        return "Déplace le joueur dans une direction (nord, sud, est, ouest).";
+        return "Se déplacer vers une nouvelle zone";
     }
 
     @Override
     public void execute(Game game, String[] args) {
-        /*if (args.length < 2) {
-            System.out.println("Utilisation : move <direction>");
+        if (args == null || args.length < 1) {
+            System.out.println("Faut dire ou tu veux aller le s");
             return;
         }
-        String direction = args[1].toLowerCase();
-        game.getWorldMap().movePlayer(direction);  méthode à implémenter dans Map
-    }*/
+        String direction = args[0].toLowerCase();
+        Player player = game.getPlayer();
+        WorldMap worldMap = game.getWorldMap();
+        Location currentLocation = player.getCurrentLocation();
+
+        String nextLocationName = currentLocation.getExit(direction);
+        if (nextLocationName == null) {
+            System.out.println("Can't go there uh");
+            return;
+        }
+
+        Location nextLocation = worldMap.getLocationByName(nextLocationName);
+        if (nextLocation == null) {
+            System.out.println("The destination '" + nextLocationName + "' doens't exist... bruh");
+            return;
+        }
+
+        if (nextLocation.isLocked()) {
+            System.out.println("The zone : " + nextLocation.getName() + " is locked... sorrow and sadness");
+        } else {
+            player.setCurrentLocation(nextLocation);
+            worldMap.updatePlayerGridPosition(nextLocation);
+            System.out.println("You're moving to " + direction);
+            System.out.println(nextLocation.getFullDescription());
+        }
     }
 }

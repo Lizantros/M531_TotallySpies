@@ -8,27 +8,41 @@ public class TakeCommand implements ICommand {
 
     @Override
     public String getDescription() {
-        return "Prend un objet et l'ajoute à l'inventaire.";
+        return "Take an object";
     }
 
     @Override
     public void execute(Game game, String[] args) {
-        /*if (args.length < 2) {
-            System.out.println("Utilisation : take <nom_objet>");
+        if (args == null || args.length == 0) {
+            System.out.println("Take what ?");
             return;
         }
-        String itemName = args[1];
-        ItemManager itemManager = game.getItemManager();
-        Location currentLocation = game.getWorldMap().getPlayerLocation();
+        String itemName = String.join(" ", args);
+        Player player = game.getPlayer();
+        Location currentLocation = player.getCurrentLocation();
+
+        Item itemToTake = null;
+
         for (Item item : currentLocation.getItems()) {
             if (item.getName().equalsIgnoreCase(itemName)) {
-                itemManager.takeItem(game.getPlayer(), currentLocation, item);
-                System.out.println(itemName + " a été ajouté à votre inventaire.");
-                return;
+                itemToTake = item;
+                break;
             }
         }
-        System.out.println("Objet non trouvé ici.");
-    }
-}{*/
+
+        if (itemToTake != null) {
+            if (itemToTake.isTakeable()) {
+                if (currentLocation.removeItemByName(itemToTake.getName()) != null) {
+                    player.getInventory().addItem(itemToTake);
+                    System.out.println(itemToTake.getName() + " was stolen by you... and added to your inventory");
+                } else {
+                    System.out.println("Impossible to take " + itemName + ".");
+                }
+            } else {
+                System.out.println("You can't take " + itemName + "think... think!!!");
+            }
+        } else {
+            System.out.println("This object : '" + itemName + "' doens't exist here...");
+        }
     }
 }

@@ -1,5 +1,7 @@
 package main;
 
+import java.util.List;
+
 public class HelpCommand implements ICommand {
     @Override
     public String getVerb() {
@@ -8,13 +10,16 @@ public class HelpCommand implements ICommand {
 
     @Override
     public String getDescription() {
-        return "Affiche la liste des commandes disponibles.";
+        return "Show the commands";
     }
 
     @Override
     public void execute(Game game, String[] args) {
-        /*for (ICommand command : game.getCommandManager().getAllCommands()) {
-            System.out.println(command.getVerb() + " : " + command.getDescription());
-        }*/
+        System.out.println("\nCommands available :");
+        List<ICommand> allCommands = game.getCommandRegistry().getAllCommands();
+        for (ICommand cmd : allCommands) {
+            System.out.println(cmd.getVerb() + " - " + cmd.getDescription());
+        }
+        System.out.println();
     }
 }
