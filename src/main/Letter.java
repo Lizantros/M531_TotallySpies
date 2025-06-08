@@ -20,7 +20,7 @@ public class Letter extends Item {
 
 
     public void inspect() {
-        System.out.println("You're reading very hard'" + getName() + "':");
+        System.out.println("You're reading very hard, you're locked in, you're focused !         " + getName() + "':");
         System.out.println("----------------------------------------");
         System.out.println(this.content);
         System.out.println("----------------------------------------");

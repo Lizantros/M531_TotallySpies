@@ -14,7 +14,7 @@ public class TakeCommand implements ICommand {
     @Override
     public void execute(Game game, String[] args) {
         if (args == null || args.length == 0) {
-            System.out.println("Take what ?");
+            System.out.println("Take what ? Provide the object's name to take...");
             return;
         }
         String itemName = String.join(" ", args);
@@ -39,7 +39,7 @@ public class TakeCommand implements ICommand {
                     System.out.println("Impossible to take " + itemName + ".");
                 }
             } else {
-                System.out.println("You can't take " + itemName + "think... think!!!");
+                System.out.println("You can't take " + itemName + "think... THINK!!!");
             }
         } else {
             System.out.println("This object : '" + itemName + "' doens't exist here...");

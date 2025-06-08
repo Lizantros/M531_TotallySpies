@@ -53,7 +53,7 @@ public class Inventory {
 
     public String getItemsDisplay() {
         if (items.isEmpty()) {
-            return "You're inventory is empty... You're broke..";
+            return "You're inventory is empty... You're broke...";
         }
 
         String displayText = "You have: ";

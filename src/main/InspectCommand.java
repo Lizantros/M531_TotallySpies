@@ -14,12 +14,12 @@ public class InspectCommand implements ICommand {
     @Override
     public void execute(Game game, String[] args) {
         if (args == null || args.length == 0) {
-            System.out.println("Inspect what ?");
+            System.out.println("Inspect what ? You need to put the name of the object you wish to inspect");
             return;
         }
         String itemName = String.join(" ", args);
         Player player = game.getPlayer();
-        Item itemToInspect = null;
+        Item itemToInspect;
 
         itemToInspect = player.getInventory().getItemByName(itemName);
 
@@ -40,7 +40,7 @@ public class InspectCommand implements ICommand {
                 System.out.println(itemToInspect.getDescription());
             }
         } else {
-            System.out.println("There isn't an object called '" + itemName + "' to inspect");
+            System.out.println("There isn't any object called '" + itemName + "' to inspect");
         }
     }
 }

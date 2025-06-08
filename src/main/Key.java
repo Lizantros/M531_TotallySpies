@@ -1,7 +1,7 @@
 package main;
 
 public class Key extends Item {
-    private String targetLocationName; // Nom de la zone que cette clé déverrouille
+    private String targetLocationName;
 
     public Key(String name, String description, String targetLocationName) {
         super(name, description);
@@ -31,7 +31,7 @@ public class Key extends Item {
                 }
             }
         }
-        System.out.println(getName() + " The zone you're in or a nearby one doesn't seem to be able to unlocked.");
+        System.out.println(getName() + " The zone you're in or a nearby one doesn't seem to be able to be unlocked.");
         return false;
     }
 }

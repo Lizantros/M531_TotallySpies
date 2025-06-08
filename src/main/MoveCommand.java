@@ -8,13 +8,13 @@ public class MoveCommand implements ICommand {
 
     @Override
     public String getDescription() {
-        return "Se déplacer vers une nouvelle zone";
+        return "Move to another zone";
     }
 
     @Override
     public void execute(Game game, String[] args) {
         if (args == null || args.length < 1) {
-            System.out.println("Faut dire ou tu veux aller le s");
+            System.out.println("You need to give a direction... north/south/east/west... Come on");
             return;
         }
         String direction = args[0].toLowerCase();

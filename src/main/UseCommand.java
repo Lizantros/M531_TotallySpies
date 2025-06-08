@@ -14,7 +14,7 @@ public class UseCommand implements ICommand {
     @Override
     public void execute(Game game, String[] args) {
         if (args == null || args.length == 0) {
-            System.out.println("Using what objet ????????");
+            System.out.println("Using what objet ? Please... This poor game ain't able to read your mind, so... give the name too !");
             return;
         }
         String itemName = String.join(" ", args);
@@ -22,7 +22,7 @@ public class UseCommand implements ICommand {
         Item itemToUse = player.getInventory().getItemByName(itemName);
 
         if (itemToUse == null) {
-            System.out.println("You don't have this object called '" + itemName + "' in your inventory... Don't even remember what you take uh...");
+            System.out.println("You don't have this object called '" + itemName + "' in your inventory... Don't even remember what you took uh...");
             return;
         }
 

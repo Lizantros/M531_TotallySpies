@@ -17,8 +17,7 @@ public class InventoryCommand implements ICommand {
         if (player != null && player.getInventory() != null) {
             System.out.println(player.getInventory().getItemsDisplay());
         } else {
-
-            System.out.println("Can't access your inventory... Well game is bugged... SHouldn't happen so either uninstall the game or pray very hard");
+            System.out.println("Can't access your inventory... It means the game is bugged... Shouldn't happen so either uninstall the game or pray very hard");
         }
     }
 }

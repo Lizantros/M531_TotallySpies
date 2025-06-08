@@ -1,5 +1,8 @@
 package main;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -10,10 +13,25 @@ public class Game {
     private CommandRegistry commandRegistry;
     private boolean isGameOver;
     private Scanner inputScanner;
+    private List<String> commandHistory;
+    private static final String SAVE_FILENAME = "savefile.txt";
 
     public Game() {
-        System.out.println("Initializing game (ULTRA-SIMPLE BETA)...");
+        this.commandHistory = new ArrayList<>();
         this.inputScanner = new Scanner(System.in);
+
+        if (Files.exists(Paths.get(SAVE_FILENAME))) {
+            System.out.println("A save was found. Do you want to play it");
+            String response = inputScanner.nextLine().trim().toLowerCase();
+            if (response.equals("yes") || response.equals("y")) {
+                loadGame();
+                return;
+            }
+        }
+        startNewGame();
+    }
+    private void startNewGame() {
+        System.out.println("Initializing the game (ULTRA-SIMPLE BETA)!!!!!!!!!!!!!!!!!!!!");
         this.commandRegistry = new CommandRegistry();
         this.isGameOver = false;
 
@@ -24,10 +42,43 @@ public class Game {
         if (this.player != null && this.player.getCurrentLocation() != null) {
             System.out.println(this.player.getCurrentLocation().getFullDescription());
         } else {
-            System.err.println("Err : No starting zone for the player... rip");
+            System.err.println("No starting zone");
             this.isGameOver = true;
         }
     }
+
+    private void loadGame() {
+        System.out.println("Loading saved game...");
+
+        this.commandRegistry = new CommandRegistry();
+        this.isGameOver = false;
+        setupCommands();
+        setupWorld();
+
+        this.commandHistory.clear();
+
+        try {
+            List<String> savedCommands = Files.readAllLines(Paths.get(SAVE_FILENAME));
+
+            for (String commandLine : savedCommands) {
+                if (!commandLine.trim().isEmpty()) {
+                    executeCommandFromString(commandLine, false); // Don't add to history when replaying
+                }
+            }
+
+            System.out.println("Game loaded successfully!");
+            System.out.println("'help' to see the commands.");
+            if (this.player != null && this.player.getCurrentLocation() != null) {
+                System.out.println(this.player.getCurrentLocation().getFullDescription());
+            }
+
+        } catch (IOException e) {
+            System.out.println("Error loading saved game: " + e.getMessage());
+            System.out.println("Starting new game instead...");
+            startNewGame();
+        }
+    }
+
 
     private void setupCommands() {
         commandRegistry.addCommand(new MoveCommand());
@@ -39,6 +90,8 @@ public class Game {
         commandRegistry.addCommand(new InspectCommand());
         commandRegistry.addCommand(new SayCommand());
         commandRegistry.addCommand(new UseCommand());
+        commandRegistry.addCommand(new SaveCommand());
+        commandRegistry.addCommand(new TeleportCommand());
     }
 
     private void setupWorld() {
@@ -48,8 +101,8 @@ public class Game {
         Location zone2 = new Location("The Ancients' Whisper", "A dense thicket where a centuries-old oak tree stands. At its feet, a small stone stele seems to have been engraved long ago.\nThe wind whistles softly through the branches, like whispered secrets.");
         Location zone3 = new Location("The Clear Spring", "A spring of crystal-clear water gushes from a mossy rock, forming a small pool\nThe place is calm, ideal for reflection. Colorful butterflies flutter above the water.");
         Location zone4 = new Location("The Forbidden Ruins", "The remains of an ancient watchtower, overgrown with vegetation.\nThe entrance is blocked by a heavy, rusted gate, secured by a massive padlock. A sense of mystery and danger emanates from this place.");
-        Location zone5 = new Location("Dawn of Mysteries", "A peaceful clearing bathed in soft morning light. An old sign marks the beginning of an adventure.\nThe air is fresh, and a light breeze rustles the leaves of the surrounding trees. This is where your quest begins.");
-        Location zone6 = new Location("The Forgotten Camp", "A peaceful clearing bathed in soft morning light. An old sign marks the beginning of an adventure.\nThe air is fresh, and a light breeze rustles the leaves of the surrounding trees. This is where your quest begins.");
+        Location zone5 = new Location("Peaceful Clearing", "A oeaceful clearing... Or... Is it really peaceful ?!");
+        Location zone6 = new Location("The Forgotten Camp", "A weird camp... There are blood stains here and there");
         Location zone7 = new Location("The Shaky Bridge", "An old rope and plank bridge spans a misty ravine. Several planks are missing, and the structure looks unstable.\nA thick chain blocks access, locked by a complex padlock.");
         Location zone8 = new Location("The Echoing Cave", "The gaping entrance of a dark cave. Water drips from the ceiling with a regular echo.\nFaintly luminous crystals line some of the walls, creating a mysterious atmosphere.");
         Location zone9 = new Location("The Whispering Garden", "A once magnificent garden, now overgrown with tall grasses and wildflowers.\nStone statues, half-hidden by vegetation, seem to watch the player. The wind makes strange sounds here.");
@@ -85,6 +138,8 @@ public class Game {
         Enigma enigmeRuins = new Enigma("A strange object", "IS THERE AN ENIGMA HERE ?!");
         Enigma enigmeBridge = new Enigma("A strange object", "IS THERE AN ENIGMA HERE ?!");
         Enigma enigmeCrypt = new Enigma("A strange object", "IS THERE AN ENIGMA HERE ?!");
+
+        TeleportCrystal crystal = new TeleportCrystal("Teleport Crystal", "Yay ! You can teleport to places you've already visited now !!.");
 
         zone3.setEnigma("What does a cat do when it's happy?", "it purrs", k2, enigmeRuins.getName());
         zone5.setEnigma("What color is Henry IV's white horse?", "White", k1, enigmeBridge.getName());
@@ -143,14 +198,55 @@ public class Game {
         zone3.addItem(enigmeRuins);
         zone6.addItem(enigmeBridge);
         zone9.addItem(enigmeCrypt);
+        zone12.addItem(crystal);
 
         this.player = new Player(zone1);
         this.worldmap.updatePlayerGridPosition(zone1);
     }
+    private void executeCommandFromString(String commandLine, boolean addToHistory) {
+        if (commandLine.trim().isEmpty()) {
+            return;
+        }
 
+        String commandVerb;
+        String apresLeVerb = "";
+        String[] commandArgs;
+        int firstSpaceIndex = commandLine.indexOf(' ');
+        if (firstSpaceIndex == -1) {
+            commandVerb = commandLine.toLowerCase();
+            commandArgs = new String[0];
+        } else {
+            commandVerb = commandLine.substring(0, firstSpaceIndex).toLowerCase();
+            if (firstSpaceIndex < commandLine.length() - 1) {
+                apresLeVerb = commandLine.substring(firstSpaceIndex + 1).trim();
+            }
+            if (apresLeVerb.isEmpty()) {
+                commandArgs = new String[0];
+            } else {
+                String[] potentialArgs = apresLeVerb.split(" ");
+                List<String> finalListArgs = new ArrayList<>();
+                for (String arg : potentialArgs) {
+                    if (!arg.isEmpty()) {
+                        finalListArgs.add(arg);
+                    }
+                }
+                commandArgs = finalListArgs.toArray(new String[0]);
+            }
+        }
+
+        if (addToHistory && !commandVerb.equals("save")) {
+            commandHistory.add(commandLine);
+        }
+
+        ICommand commandToExecute = commandRegistry.getCommand(commandVerb);
+        if (commandToExecute != null) {
+            commandToExecute.execute(this, commandArgs);
+        } else {
+            System.out.println("Command " + commandVerb + " is unknown. Write help to get the command's list");
+        }
+    }
 
     public void run() {
-        System.out.println("Oh shit, here we go again");
         String line;
         while (!isGameOver) {
             System.out.print("\n> ");
@@ -158,43 +254,15 @@ public class Game {
             if (line.isEmpty()) {
                 continue;
             }
-            String commandVerb;
-            String apresLeVerb = "";
-            String[] commandArgs;
-            int firstSpaceIndex = line.indexOf(' ');
-            if (firstSpaceIndex == -1) {
-                commandVerb = line.toLowerCase();
-                commandArgs = new String[0];
-            } else {
-                commandVerb = line.substring(0, firstSpaceIndex).toLowerCase();
-                if (firstSpaceIndex < line.length() - 1) {
-                    apresLeVerb = line.substring(firstSpaceIndex + 1).trim();
-                }
-                if (apresLeVerb.isEmpty()) {
-                    commandArgs = new String[0];
-                } else {
-                    String[] potentialArgs = apresLeVerb.split(" ");
-                    List<String> finalListArgs = new ArrayList<>();
-                    for (String arg : potentialArgs) {
-                        if (!arg.isEmpty()) {
-                            finalListArgs.add(arg);
-                        }
-                    }
-                    commandArgs = finalListArgs.toArray(new String[0]);
-                }
-            }
-            ICommand commandToExecute = commandRegistry.getCommand(commandVerb);
-            if (commandToExecute != null) {
-                commandToExecute.execute(this, commandArgs);
-            } else {
-                System.out.println("Command '" + commandVerb + "' unknown. Write help instead of crying");
-            }
+
+            executeCommandFromString(line, true);
         }
         inputScanner.close();
-        System.out.println("C'est finito pépito mais bon y a pas de commande pour stop donc on le verra jamais rip");
+        System.out.println("See ya");
     }
     public Player getPlayer() { return player; }
     public WorldMap getWorldMap() { return worldmap; }
     public CommandRegistry getCommandRegistry() { return commandRegistry; }
     public void setGameOver() { this.isGameOver = true; }
+    public List<String> getCommandHistory() { return new ArrayList<>(commandHistory); }
 }
