@@ -132,7 +132,7 @@ public class Game {
         Key k3 = new Key("Key to the Crypt", "A dark, ornate key made of a strange, cold metal. Intricate geometric patterns are carved into its bow, hinting at the complex mechanisms of a deeply sealed chamber.", zone10.getName());
 
         Letter l1 = new Letter("Sylvan Guardian's Scroll", "A weathered parchment bearing an odd question, seemingly left by a protector of the woods.", "What does a cat do when it's happy? Say the answer ALOUD in the zone to the EAST.");
-        Letter l2 = new Letter("Lost Traveler's Note", "A hastily scribbled note on a piece of rough paper, asking a seemingly simple historical question.", "What color is Henry IV's white horse? Say the answer ALOUD in the zone to the NORTH-EAST.");
+        Letter l2 = new Letter("Lost Traveler's Note", "A hastily scribbled note on a piece of rough paper, asking a seemingly simple historical question.", "What color is Henry IV's white horse? Say the answer ALOUD in the zone to the EAST.");
         Letter l3 = new Letter("Ancient Architect's Cipher", "A brittle piece of papyrus with a geometric query, penned by someone with an eye for design.", "How many sides does a triangle have? Say the answer ALOUD in the zone to the SOUTH-WEST.");
 
         Enigma enigmeRuins = new Enigma("A strange object", "IS THERE AN ENIGMA HERE ?!");
@@ -142,8 +142,8 @@ public class Game {
         TeleportCrystal crystal = new TeleportCrystal("Teleport Crystal", "Yay ! You can teleport to places you've already visited now !!.");
 
         zone3.setEnigma("What does a cat do when it's happy?", "it purrs", k2, enigmeRuins.getName());
-        zone5.setEnigma("What color is Henry IV's white horse?", "White", k1, enigmeBridge.getName());
-        zone9.setEnigma("How many sides does a triangle have?", "3", k3, enigmeCrypt.getName());
+        zone6.setEnigma("What color is Henry IV's white horse?", "White", k1, enigmeBridge.getName());
+        zone11.setEnigma("How many sides does a triangle have?", "3", k3, enigmeCrypt.getName());
 
         zone1.addExit("east", zone2.getName());
         zone1.addExit("south", zone5.getName());
@@ -197,7 +197,7 @@ public class Game {
 
         zone3.addItem(enigmeRuins);
         zone6.addItem(enigmeBridge);
-        zone9.addItem(enigmeCrypt);
+        zone11.addItem(enigmeCrypt);
         zone12.addItem(crystal);
 
         this.player = new Player(zone1);
