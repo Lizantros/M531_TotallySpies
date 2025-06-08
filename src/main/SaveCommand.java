@@ -15,7 +15,7 @@ public class SaveCommand implements ICommand {
 
     @Override
     public String getDescription() {
-        return "Save your current game progress";
+        return "Save your game";
     }
 
     @Override
@@ -27,9 +27,9 @@ public class SaveCommand implements ICommand {
                 writer.write(command);
                 writer.newLine();
             }
-            System.out.println("Game saved successfully!");
+            System.out.println("The game was saved... Maybe");
         } catch (IOException e) {
-            System.out.println("Error saving the game: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 }

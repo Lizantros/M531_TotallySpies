@@ -58,11 +58,11 @@ public class Game {
         this.commandHistory.clear();
 
         try {
-            List<String> savedCommands = Files.readAllLines(Paths.get(SAVE_FILENAME));
+            List<String> lines = Files.readAllLines(Paths.get(SAVE_FILENAME));
 
-            for (String commandLine : savedCommands) {
-                if (!commandLine.trim().isEmpty()) {
-                    executeCommandFromString(commandLine, false); // Don't add to history when replaying
+            for (String cl : lines) {
+                if (!cl.trim().isEmpty()) {
+                    executeCommandFromString(cl, false);
                 }
             }
 
