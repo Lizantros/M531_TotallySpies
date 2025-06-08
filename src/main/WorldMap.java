@@ -27,7 +27,8 @@ public class WorldMap {
             locationsByName.put(key, location);
             grid[r][c] = location;
         } else {
-            System.out.println("The zone " + location.getName() + "is kinda out of the map !!!! !!!!!!!!!!("+r+","+c+").");
+            System.out.println("The zone " + location.getName() + "is kinda out of the map !!!! ("+r+","+c+").");
+            // dans la logique cependant, c'est normalement impossible si les exits ont bien été mis...
         }
     }
 

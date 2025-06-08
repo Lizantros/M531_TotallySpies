@@ -8,7 +8,7 @@ public class SayCommand implements ICommand {
 
     @Override
     public String getDescription() {
-        return "Say something to resolve enigma";
+        return "Say an enigma's good answer in the good zone to resolve an enigma";
     }
 
     @Override
@@ -26,7 +26,7 @@ public class SayCommand implements ICommand {
         if (currentLocation.hasEnigma() && !currentLocation.isEnigmaSolved()) {
             currentLocation.solveEnigma(saidText);
         } else if (currentLocation.isEnigmaSolved()) {
-            System.out.println("Enigma already resolved");
+            System.out.println("Enigma is already resolved... Come on, you were kinda the person who solved it...");
         }
     }
 }

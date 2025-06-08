@@ -21,8 +21,6 @@ public class Location implements IPrintable {
     private String enigmaIndicatorObjectName;
 
 
-    private static final int MAX_NAME_LENGTH_ON_MAP = 15;
-
     public Location(String name, String descriptionText) {
         this.name = name;
         this.descriptionText = descriptionText;
@@ -47,12 +45,12 @@ public class Location implements IPrintable {
             fullDesc += String.join(", ", itemNames) + ".";
         }
         if (exits != null && !exits.isEmpty()) {
-            fullDesc += "\nExit potentially existing : ";
+            fullDesc += "\nExit maybe potentially existing : ";
             List<String> exitDirections = new ArrayList<>(exits.keySet());
             Collections.sort(exitDirections);
             fullDesc += String.join(" ", exitDirections);
         } else {
-            fullDesc += "\nOh... I am in trouble...";
+            fullDesc += "\nOh... I am in trouble... because the game creator made a mistake... Oh noooo";
         }
         return fullDesc;
     }
@@ -123,7 +121,7 @@ public class Location implements IPrintable {
         if (hasEnigma() && !isEnigmaSolved()) {
             if (playerSolution != null && playerSolution.toLowerCase().equals(this.enigmaSolution)) {
                 this.enigmaSolved = true;
-                System.out.println("YES YES YES THAT WAS THE GOOD RESULT");
+                System.out.println("YES YES YES You provided the GOOD answer");
                 if (this.keyReward != null) {
                     this.addItem(this.keyReward);
                     System.out.println(this.keyReward.getName() + " not so mysteriously appear !");
@@ -140,16 +138,13 @@ public class Location implements IPrintable {
                 return false;
             }
         } else if (isEnigmaSolved()) {
-            System.out.println("You already resolved it... bruh");
+            System.out.println("You already resolved it... Please, play this game seriously");
         }
         return false;
     }
 
     @Override
     public String getPrintableString() {
-        if (name.length() > MAX_NAME_LENGTH_ON_MAP) {
-            return name.substring(0, MAX_NAME_LENGTH_ON_MAP - 3) + "...";
-        }
         return name;
     }
 
